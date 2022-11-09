@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/nils/AndroidStudioProjects/ThievesMusicPlayer/app/src/main/res/drawable/item_playlist.xml" value="0.3141025641025641" />
+        <entry key="..\:/Users/nils/AndroidStudioProjects/ThievesMusicPlayer/app/src/main/res/layout/activity_main.xml" value="0.35643115942028986" />
+        <entry key="..\:/Users/nils/AndroidStudioProjects/ThievesMusicPlayer/app/src/main/res/layout/fragment_main.xml" value="0.25" />
+        <entry key="..\:/Users/nils/AndroidStudioProjects/ThievesMusicPlayer/app/src/main/res/layout/fragment_playlist_list.xml" value="0.35643115942028986" />
+        <entry key="..\:/Users/nils/AndroidStudioProjects/ThievesMusicPlayer/app/src/main/res/layout/fragment_song.xml" value="0.35643115942028986" />
+        <entry key="..\:/Users/nils/AndroidStudioProjects/ThievesMusicPlayer/app/src/main/res/layout/item_playlist.xml" value="0.30085470085470084" />
+        <entry key="..\:/Users/nils/AndroidStudioProjects/ThievesMusicPlayer/app/src/main/res/layout/item_song.xml" value="0.30085470085470084" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
