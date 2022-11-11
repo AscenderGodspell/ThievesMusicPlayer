@@ -49,14 +49,14 @@
             android:layout_weight="2"
             android:weightSum="4">
             <TextView
-                android:id="@+id/songs_title_tv"
+                android:id="@+id/framgent_song_title_tv"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="3"
                 android:text="title"
                 android:textAlignment="center"/>
             <TextView
-                android:id="@+id/songs_artist_tv"
+                android:id="@+id/framgent_songs_artist_tv"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -81,11 +81,11 @@
                 android:text="00:00"
                 android:textAlignment="center"
                 android:gravity="center"/>
-            <ProgressBar
+            <SeekBar
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="14"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+                android:progress="0"/>
             <TextView
                 android:id="@+id/song_length_tv"
                 android:layout_width="0dp"

@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/nils/AndroidStudioProjects/ThievesMusicPlayer/app/src/main/res/drawable/ic_play.xml" value="0.3141025641025641" />
         <entry key="..\:/Users/nils/AndroidStudioProjects/ThievesMusicPlayer/app/src/main/res/drawable/item_playlist.xml" value="0.3141025641025641" />
         <entry key="..\:/Users/nils/AndroidStudioProjects/ThievesMusicPlayer/app/src/main/res/layout/activity_main.xml" value="0.35643115942028986" />
         <entry key="..\:/Users/nils/AndroidStudioProjects/ThievesMusicPlayer/app/src/main/res/layout/fragment_main.xml" value="0.25" />

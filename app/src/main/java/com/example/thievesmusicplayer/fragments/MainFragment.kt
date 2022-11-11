@@ -5,8 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.thievesmusicplayer.MainActivity
 import com.example.thievesmusicplayer.R
+import com.example.thievesmusicplayer.adapters.SongAdapter
+import com.example.thievesmusicplayer.adpterClasses.Song
 import com.example.thievesmusicplayer.communicators.MainCommunicator
+import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
 
 class MainFragment : Fragment() {
@@ -22,12 +27,53 @@ class MainFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_main, container, false)
 
+        var songList = mutableListOf(
+            Song("Shape Of You", "Ed Sheeran", ""),
+            Song("Hustler", "Zayde Wolf", "")
+        )
+
+        val adapter = SongAdapter(songList)
+        view.main_rv.adapter = adapter
+        view.main_rv.layoutManager = LinearLayoutManager(context)
+
         view.playlist_button_tv.setOnClickListener {
             mainCommunicator.replaceFragment(PlaylistListFragment())
         }
 
         view.bottom_bar_ll.setOnClickListener {
             mainCommunicator.replaceFragment(SongFragment())
+        }
+
+        view.menu_button.setOnClickListener {
+            if(view.menu_ll.visibility == View.GONE){
+                view.menu_ll.visibility = View.VISIBLE
+            }
+            else{
+                view.menu_ll.visibility = View.GONE
+            }
+        }
+
+        view.load_songs_tv.setOnClickListener {
+            adapter.notifyItemInserted(songList.size-1)
+        }
+
+        view.play_button_iv.setOnClickListener {
+            if(mainCommunicator.getIsPlayingSong()){
+                mainCommunicator.pauseAudio()
+                view.play_button_iv.setImageResource(R.drawable.ic_play)
+            }
+            else{
+                if(mainCommunicator.getIsOnPause()){
+                    mainCommunicator.resumeAudio()
+                    view.play_button_iv.setImageResource(R.drawable.ic_pause)
+                }
+                else{
+                    mainCommunicator.playAudio()
+                    view.play_button_iv.setImageResource(R.drawable.ic_pause)
+                }
+
+            }
+
         }
 
         return view
