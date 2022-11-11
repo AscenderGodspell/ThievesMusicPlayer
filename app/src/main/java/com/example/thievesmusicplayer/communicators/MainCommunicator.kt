@@ -13,8 +13,15 @@ interface MainCommunicator {
     fun pauseAudio()
     fun resumeAudio()
 
+    fun getSongCover()
+
+    fun playNextSong()
+    fun playPreviousSong()
+
     fun setIsPlayingSong(isPlayingSongTemp: Boolean)
     fun getIsPlayingSong() : Boolean
 
     fun getIsOnPause() : Boolean
+
+    fun getCurrentSongPlaying(): Song
 }

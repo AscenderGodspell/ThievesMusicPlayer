@@ -28,9 +28,14 @@ class MainFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_main, container, false)
 
         var songList = mutableListOf(
-            Song("Shape Of You", "Ed Sheeran", ""),
-            Song("Hustler", "Zayde Wolf", "")
+            Song("", "Shape Of You", "Ed Sheeran", "", 0f),
+            Song("", "Hustler", "Zayde Wolf", "", 0f)
         )
+
+        var currentSong = mainCommunicator.getCurrentSongPlaying()
+
+        view.song_title_tv.text = currentSong.title
+        view.song_artist_tv.text = currentSong.artist
 
         val adapter = SongAdapter(songList)
         view.main_rv.adapter = adapter
@@ -74,6 +79,16 @@ class MainFragment : Fragment() {
 
             }
 
+        }
+
+        view.next_button_iv.setOnClickListener {
+            mainCommunicator.playNextSong()
+
+            currentSong = mainCommunicator.getCurrentSongPlaying()
+
+            view.song_title_tv.text = currentSong.title
+            view.song_artist_tv.text = currentSong.artist
+            view.play_button_iv.setImageResource(R.drawable.ic_pause)
         }
 
         return view
