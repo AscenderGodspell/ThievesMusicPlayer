@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.example.thievesmusicplayer.R
 import com.example.thievesmusicplayer.communicators.MainCommunicator
 import kotlinx.android.synthetic.main.fragment_main.view.*
+import kotlinx.android.synthetic.main.fragment_song.*
 import kotlinx.android.synthetic.main.fragment_song.view.*
 
 class SongFragment : Fragment() {
@@ -25,9 +26,26 @@ class SongFragment : Fragment() {
 
         var currentSongSF = mainCommunicator.getCurrentSongPlaying()
 
-        //mainCommunicator.getSongCover()
 
+
+        //Prepare View
+        view.fragment_song_title_tv.text = currentSongSF.title
+        view.fragment_songs_artist_tv.text = currentSongSF.artist
+
+        if(mainCommunicator.getIsPlayingSong()){
+
+        }
+
+
+
+        //Other Code
+        mainCommunicator.getSongCover()
+
+
+
+        //OnClickListeners
         view.close_song_button_iv.setOnClickListener {
+            mainCommunicator.setCurrentFragment("MAIN")
             mainCommunicator.replaceFragment(MainFragment())
         }
 
@@ -50,12 +68,17 @@ class SongFragment : Fragment() {
         }
 
         view.skip_song_iv.setOnClickListener {
-            mainCommunicator.playNextSong()
+            if(mainCommunicator.getIsPlayingSong() || mainCommunicator.getIsOnPause()){
+                mainCommunicator.playNextSong(true)
+            }
+            else{
+                mainCommunicator.playNextSong(false)
+            }
 
             currentSongSF = mainCommunicator.getCurrentSongPlaying()
 
-            view.framgent_song_title_tv.text = currentSongSF.title
-            view.framgent_songs_artist_tv.text = currentSongSF.artist
+            view.fragment_song_title_tv.text = currentSongSF.title
+            view.fragment_songs_artist_tv.text = currentSongSF.artist
             view.play_song_iv.setImageResource(R.drawable.ic_pause_circle)
         }
 
@@ -64,8 +87,8 @@ class SongFragment : Fragment() {
 
             currentSongSF = mainCommunicator.getCurrentSongPlaying()
 
-            view.framgent_song_title_tv.text = currentSongSF.title
-            view.framgent_songs_artist_tv.text = currentSongSF.artist
+            view.fragment_song_title_tv.text = currentSongSF.title
+            view.fragment_songs_artist_tv.text = currentSongSF.artist
             view.play_song_iv.setImageResource(R.drawable.ic_pause_circle)
         }
 

@@ -15,8 +15,10 @@ interface MainCommunicator {
 
     fun getSongCover()
 
-    fun playNextSong()
+    fun playNextSong(skipped: Boolean)
     fun playPreviousSong()
+
+    fun setCurrentSongData()
 
     fun setIsPlayingSong(isPlayingSongTemp: Boolean)
     fun getIsPlayingSong() : Boolean
@@ -24,4 +26,8 @@ interface MainCommunicator {
     fun getIsOnPause() : Boolean
 
     fun getCurrentSongPlaying(): Song
+
+    fun getSongList(): MutableList<Song>
+
+    fun setCurrentFragment(currentFragmentTemp: String)
 }

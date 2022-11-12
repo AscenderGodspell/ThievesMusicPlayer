@@ -38,7 +38,8 @@
             android:id="@+id/song_cover_iv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="8"/>
+            android:layout_weight="8"
+            android:src="@drawable/ascension"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -50,14 +51,14 @@
             android:layout_weight="2"
             android:weightSum="4">
             <TextView
-                android:id="@+id/framgent_song_title_tv"
+                android:id="@+id/fragment_song_title_tv"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="3"
                 android:text="title"
                 android:textAlignment="center"/>
             <TextView
-                android:id="@+id/framgent_songs_artist_tv"
+                android:id="@+id/fragment_songs_artist_tv"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"

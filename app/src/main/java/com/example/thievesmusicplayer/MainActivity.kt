@@ -26,6 +26,10 @@ import android.graphics.BitmapFactory
 import android.graphics.Bitmap
 
 import android.media.MediaMetadataRetriever
+import android.widget.ImageView
+import android.widget.TextView
+import com.example.thievesmusicplayer.fragments.SongFragment
+import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.fragment_song.*
 
 
@@ -41,12 +45,14 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
 
     private var isPlayingSong = false
     private var isOnPause = false
-    private var currentSongPlaying = 1
+    private var currentSongPlaying = 0
+    private lateinit var currentFragment: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        currentFragment = "MAIN"
         replaceFragment(mainFragment)
 
         //HANDLING FOR STORAGE PERMISSION
@@ -70,9 +76,6 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
         //HANDLING FOR STORAGE PERMISSION
 
         fetchMusicFromFolder()
-
-        //Log.d("TEST", "lul lul lul lul")
-
     }
 
     override fun onDestroy() {
@@ -83,7 +86,7 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
         super.onDestroy()
     }
 
-    override fun replaceFragment(fragment: Fragment){
+    override fun replaceFragment(fragment: Fragment) {
         if(fragment != null){
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragment_container, fragment)
@@ -97,6 +100,18 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
         }
     }
 
+    override fun onBackPressed() {
+        //super.onBackPressed()
+
+        if(currentFragment == "MAIN"){
+
+        }
+        else if(currentFragment == "SONG"){
+            currentFragment = "MAIN"
+            replaceFragment(MainFragment())
+        }
+    }
+
     override fun returnToPreviousFragment(){
         supportFragmentManager.popBackStack()
         //TODO prevent returning to SongFragment on clicking the "Back-Button"
@@ -104,12 +119,13 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
 
     fun fetchMusicFromFolder(){
         File(path).walkTopDown().forEach { it ->
-            Log.d("TEST", "name: " + it.name)
-            Log.d("TEST", "path: " + it.path)
+            //Log.d("TEST", "name: " + it.name)
+            //Log.d("TEST", "path: " + it.path)
             val tempSong = Song(it.name, it.name.substringAfter(" - ").substringBefore(".mp3"), it.name.substringBefore(" - "), it.path, 0f)
 
             songList.add(tempSong)
         }
+        songList.removeFirst()
     }
 
     override fun playAudio(){
@@ -126,6 +142,10 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
 
             isPlayingSong = true
             mediaPlayer.start()
+
+            mediaPlayer.setOnCompletionListener {
+                playNextSong(false)
+            }
         }
     }
 
@@ -141,24 +161,45 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
         mediaPlayer.start()
     }
 
-    override fun playNextSong(){
-        mediaPlayer.stop()
+    override fun playNextSong(skipped: Boolean){
+        if(skipped){
+            mediaPlayer.stop()
+        }
         currentSongPlaying += 1
         if(currentSongPlaying >= songList.size)
         {
-            currentSongPlaying = 1
+            currentSongPlaying = 0
         }
+
+        setCurrentSongData()
         playAudio()
     }
 
     override fun playPreviousSong(){
         mediaPlayer.stop()
         currentSongPlaying -= 1
-        if(currentSongPlaying == 0)
+        if(currentSongPlaying == -1)
         {
             currentSongPlaying = songList.size-1
         }
         playAudio()
+    }
+
+    override fun setCurrentSongData(){
+        if(currentFragment == "MAIN"){
+            Log.d("TEST", "LALALLALALALALALALA")
+            val titleTV: TextView = (this as MainActivity).findViewById(R.id.song_title_tv) as TextView
+            titleTV.setText(songList.elementAt(currentSongPlaying).title)
+            val artistTV: TextView = (this as MainActivity).findViewById(R.id.song_artist_tv) as TextView
+            artistTV.setText(songList.elementAt(currentSongPlaying).artist)
+        }
+        else if(currentFragment == "SONG"){
+            Log.d("TEST", "AFFE")
+            val titleTV: TextView = (this as MainActivity).findViewById(R.id.fragment_song_title_tv) as TextView
+            titleTV.setText(songList.elementAt(currentSongPlaying).title)
+            val artistTV: TextView = (this as MainActivity).findViewById(R.id.fragment_songs_artist_tv) as TextView
+            artistTV.setText(songList.elementAt(currentSongPlaying).artist)
+        }
     }
 
     override fun getSongCover(){
@@ -166,18 +207,18 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
         mmr.setDataSource(path + songList.elementAt(currentSongPlaying).fileName)
 
         val data = mmr.embeddedPicture
-        //coverart is an Imageview object
 
         // convert the byte array to a bitmap
-        //coverart is an Imageview object
-
-        // convert the byte array to a bitmap
-        if (data != null) {
+        /*if (data != null) {
             val bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
             song_cover_iv.setImageBitmap(bitmap) //associated cover art in bitmap
-        } else {
-            song_cover_iv.setImageResource(R.drawable.ascension) //any default cover resourse folder
         }
+        else {
+            song_cover_iv.setImageResource(R.drawable.ascension) //any default cover resourse folder
+        }*/
+
+        //val coverIV: ImageView = (this as MainActivity).findViewById(R.id.song_cover_iv) as ImageView
+        //coverIV.setImageResource(R.drawable.ascension)
     }
 
     override fun setIsPlayingSong(isPlayingSongTemp: Boolean){
@@ -196,4 +237,11 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
         return songList.elementAt(currentSongPlaying)
     }
 
+    override fun getSongList(): MutableList<Song>{
+        return songList
+    }
+
+    override fun setCurrentFragment(currentFragmentTemp: String){
+        currentFragment = currentFragmentTemp
+    }
 }

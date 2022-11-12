@@ -27,10 +27,7 @@ class MainFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_main, container, false)
 
-        var songList = mutableListOf(
-            Song("", "Shape Of You", "Ed Sheeran", "", 0f),
-            Song("", "Hustler", "Zayde Wolf", "", 0f)
-        )
+        var songList = mainCommunicator.getSongList()
 
         var currentSong = mainCommunicator.getCurrentSongPlaying()
 
@@ -42,10 +39,12 @@ class MainFragment : Fragment() {
         view.main_rv.layoutManager = LinearLayoutManager(context)
 
         view.playlist_button_tv.setOnClickListener {
+            mainCommunicator.setCurrentFragment("PLAYLISTLIST")
             mainCommunicator.replaceFragment(PlaylistListFragment())
         }
 
         view.bottom_bar_ll.setOnClickListener {
+            mainCommunicator.setCurrentFragment("SONG")
             mainCommunicator.replaceFragment(SongFragment())
         }
 
@@ -82,7 +81,12 @@ class MainFragment : Fragment() {
         }
 
         view.next_button_iv.setOnClickListener {
-            mainCommunicator.playNextSong()
+            if(mainCommunicator.getIsPlayingSong() || mainCommunicator.getIsOnPause()){
+                mainCommunicator.playNextSong(true)
+            }
+            else{
+                mainCommunicator.playNextSong(false)
+            }
 
             currentSong = mainCommunicator.getCurrentSongPlaying()
 
