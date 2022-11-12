@@ -93,9 +93,7 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
             if(fragment != mainFragment){
                 transaction.addToBackStack(null)
             }
-            else{
-                //TODO add double click to prevent unintentional leave
-            }
+
             transaction.commit()
         }
     }
@@ -114,13 +112,10 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
 
     override fun returnToPreviousFragment(){
         supportFragmentManager.popBackStack()
-        //TODO prevent returning to SongFragment on clicking the "Back-Button"
     }
 
     fun fetchMusicFromFolder(){
         File(path).walkTopDown().forEach { it ->
-            //Log.d("TEST", "name: " + it.name)
-            //Log.d("TEST", "path: " + it.path)
             val tempSong = Song(it.name, it.name.substringAfter(" - ").substringBefore(".mp3"), it.name.substringBefore(" - "), it.path, 0f)
 
             songList.add(tempSong)
@@ -185,16 +180,25 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
         playAudio()
     }
 
+    override fun setCurrentSongPlaying(currentSongPlayingTemp: Int){
+        currentSongPlaying = currentSongPlayingTemp
+
+        if(isPlayingSong || isOnPause){
+            mediaPlayer.stop()
+        }
+
+        setCurrentSongData()
+        playAudio()
+    }
+
     override fun setCurrentSongData(){
         if(currentFragment == "MAIN"){
-            Log.d("TEST", "LALALLALALALALALALA")
             val titleTV: TextView = (this as MainActivity).findViewById(R.id.song_title_tv) as TextView
             titleTV.setText(songList.elementAt(currentSongPlaying).title)
             val artistTV: TextView = (this as MainActivity).findViewById(R.id.song_artist_tv) as TextView
             artistTV.setText(songList.elementAt(currentSongPlaying).artist)
         }
         else if(currentFragment == "SONG"){
-            Log.d("TEST", "AFFE")
             val titleTV: TextView = (this as MainActivity).findViewById(R.id.fragment_song_title_tv) as TextView
             titleTV.setText(songList.elementAt(currentSongPlaying).title)
             val artistTV: TextView = (this as MainActivity).findViewById(R.id.fragment_songs_artist_tv) as TextView

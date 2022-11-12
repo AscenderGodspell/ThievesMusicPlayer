@@ -34,7 +34,7 @@ class MainFragment : Fragment() {
         view.song_title_tv.text = currentSong.title
         view.song_artist_tv.text = currentSong.artist
 
-        val adapter = SongAdapter(songList)
+        val adapter = SongAdapter(songList, mainCommunicator)
         view.main_rv.adapter = adapter
         view.main_rv.layoutManager = LinearLayoutManager(context)
 

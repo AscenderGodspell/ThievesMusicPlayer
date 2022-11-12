@@ -11,12 +11,15 @@ import com.example.thievesmusicplayer.communicators.MainCommunicator
 import com.example.thievesmusicplayer.fragments.SongFragment
 import kotlinx.android.synthetic.main.item_song.view.*
 
-class SongAdapter(var songs: List<Song>, /*context: Context*/) : RecyclerView.Adapter<SongAdapter.SongViewHolder>(){
 
-    private lateinit var mainCommunicator: MainCommunicator
-    private val context: Context? = null
+
+
+class SongAdapter(var songs: List<Song>, var mainCommunicator: MainCommunicator) : RecyclerView.Adapter<SongAdapter.SongViewHolder>(){
 
     inner class SongViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
+    private var clicked = false
+    private var songId = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_song, parent, false)
@@ -26,6 +29,7 @@ class SongAdapter(var songs: List<Song>, /*context: Context*/) : RecyclerView.Ad
 
     override fun onBindViewHolder(holder: SongViewHolder, position: Int) {
         //mainCommunicator = context as MainCommunicator
+        //this.mainCommunicator = mainCommunicator
 
         holder.itemView.apply{
             songs_title_tv.text = songs[position].title
@@ -33,7 +37,17 @@ class SongAdapter(var songs: List<Song>, /*context: Context*/) : RecyclerView.Ad
         }
 
         holder.itemView.setOnClickListener {
-            //mainCommunicator.replaceFragment(SongFragment())
+
+            if(clicked && (songId == holder.adapterPosition)){
+                mainCommunicator.setCurrentFragment("SONG")
+                mainCommunicator.replaceFragment(SongFragment())
+                clicked = false
+            }
+            else{
+                mainCommunicator.setCurrentSongPlaying(position)
+                clicked = true
+                songId = holder.adapterPosition
+            }
         }
     }
 
@@ -41,5 +55,15 @@ class SongAdapter(var songs: List<Song>, /*context: Context*/) : RecyclerView.Ad
         return songs.size
     }
 
-
 }
+
+
+
+/*
+        holder.itemView.setOnClickListener { v ->
+
+            val activity = v!!.context as AppCompatActivity
+            val songFragment = SongFragment()
+            activity.supportFragmentManager.beginTransaction().replace(R.id.fragment_container, songFragment).commit()
+        }
+ */

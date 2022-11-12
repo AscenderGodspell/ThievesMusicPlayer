@@ -30,4 +30,6 @@ interface MainCommunicator {
     fun getSongList(): MutableList<Song>
 
     fun setCurrentFragment(currentFragmentTemp: String)
+
+    fun setCurrentSongPlaying(currentSongPlayingTemp: Int)
 }
