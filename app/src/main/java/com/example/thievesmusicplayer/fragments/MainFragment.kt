@@ -13,6 +13,7 @@ import com.example.thievesmusicplayer.adpterClasses.Song
 import com.example.thievesmusicplayer.communicators.MainCommunicator
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
+import kotlinx.android.synthetic.main.fragment_song.view.*
 
 class MainFragment : Fragment() {
 
@@ -31,6 +32,9 @@ class MainFragment : Fragment() {
 
         var currentSong = mainCommunicator.getCurrentSongPlaying()
 
+
+
+        //Prepare View
         view.song_title_tv.text = currentSong.title
         view.song_artist_tv.text = currentSong.artist
 
@@ -38,6 +42,13 @@ class MainFragment : Fragment() {
         view.main_rv.adapter = adapter
         view.main_rv.layoutManager = LinearLayoutManager(context)
 
+        if(mainCommunicator.getIsPlayingSong()){
+            view.play_button_iv.setImageResource(R.drawable.ic_pause)
+        }
+
+
+
+        //OnClickListeners
         view.playlist_button_tv.setOnClickListener {
             mainCommunicator.setCurrentFragment("PLAYLISTLIST")
             mainCommunicator.replaceFragment(PlaylistListFragment())
@@ -93,6 +104,8 @@ class MainFragment : Fragment() {
             view.song_title_tv.text = currentSong.title
             view.song_artist_tv.text = currentSong.artist
             view.play_button_iv.setImageResource(R.drawable.ic_pause)
+
+            adapter.notifyDataSetChanged()
         }
 
         return view

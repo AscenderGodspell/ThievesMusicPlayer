@@ -20,12 +20,16 @@ interface MainCommunicator {
 
     fun setCurrentSongData()
 
+    fun setPlayButton()
+
     fun setIsPlayingSong(isPlayingSongTemp: Boolean)
     fun getIsPlayingSong() : Boolean
 
     fun getIsOnPause() : Boolean
 
     fun getCurrentSongPlaying(): Song
+
+    fun getCurrentSongPlayingId(): Int
 
     fun getSongList(): MutableList<Song>
 

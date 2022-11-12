@@ -206,6 +206,11 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
         }
     }
 
+    override fun setPlayButton(){
+        val buttonIV: ImageView = (this as MainActivity).findViewById(R.id.play_button_iv) as ImageView
+        buttonIV.setImageResource(R.drawable.ic_pause)
+    }
+
     override fun getSongCover(){
         val mmr = MediaMetadataRetriever()
         mmr.setDataSource(path + songList.elementAt(currentSongPlaying).fileName)
@@ -239,6 +244,10 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
 
     override fun getCurrentSongPlaying(): Song{
         return songList.elementAt(currentSongPlaying)
+    }
+
+    override  fun getCurrentSongPlayingId(): Int{
+        return currentSongPlaying
     }
 
     override fun getSongList(): MutableList<Song>{

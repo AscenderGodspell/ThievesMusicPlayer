@@ -33,7 +33,7 @@ class SongFragment : Fragment() {
         view.fragment_songs_artist_tv.text = currentSongSF.artist
 
         if(mainCommunicator.getIsPlayingSong()){
-
+            view.play_song_iv.setImageResource(R.drawable.ic_pause_circle)
         }
 
 
