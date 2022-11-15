@@ -1,10 +1,15 @@
 package com.example.thievesmusicplayer.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import com.example.thievesmusicplayer.R
 import com.example.thievesmusicplayer.communicators.MainCommunicator
 import kotlinx.android.synthetic.main.fragment_main.view.*
@@ -14,6 +19,9 @@ import kotlinx.android.synthetic.main.fragment_song.view.*
 class SongFragment : Fragment() {
 
     private lateinit var mainCommunicator: MainCommunicator
+
+    var progressTemp = 0
+    var isTouched = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,6 +100,76 @@ class SongFragment : Fragment() {
             view.play_song_iv.setImageResource(R.drawable.ic_pause_circle)
         }
 
+        view.position_sb.max = mainCommunicator.getTotalSongDuration()
+        view.position_sb.setOnSeekBarChangeListener(
+            object: SeekBar.OnSeekBarChangeListener{
+                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    //Log.d("KEK", "AAAAAAAAAAA")
+                    if (fromUser){
+                        progressTemp = progress
+                        isTouched = true
+                        var elapsedTime = createTimeLabel(progress)
+                        view?.song_timer_tv?.text = elapsedTime
+                    }
+                }
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+                }
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    isTouched = false
+                    mainCommunicator.getMediaPlayer().seekTo(progressTemp)
+                }
+            }
+        )
+
+        Thread(Runnable {
+            while (mainCommunicator.getMediaPlayer() != null) {
+                try {
+                    var msg = Message()
+                    msg.what = mainCommunicator.getMediaPlayer().currentPosition
+                    handler.sendMessage(msg)
+                    Thread.sleep(1000)
+                }
+                catch (e: InterruptedException){}
+            }
+        }).start()
+
         return view
+    }
+
+    @SuppressLint("HandlerLeak")
+    var handler = object: Handler(){
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+
+            var currentPosition = msg.what
+            if(!isTouched){
+                view?.position_sb?.progress = currentPosition
+
+                var elapsedTime = createTimeLabel(currentPosition)
+                view?.song_timer_tv?.text = elapsedTime
+            }
+            //var timerTV: TextView = findViewById(R.id.song_timer_tv) as TextView
+            //timerTV.setText(elapsedTime)
+
+            var totalTime = createTimeLabel((mainCommunicator.getTotalSongDuration()))
+            view?.song_length_tv?.text = totalTime
+            //var lengthTV: TextView = findViewById(R.id.song_length_tv) as TextView
+            //lengthTV.setText(totalTime)
+        }
+    }
+
+    fun createTimeLabel(time: Int): String{
+        var timeLabel = ""
+        var min = time / 1000 / 60
+        var sec = time / 1000 % 60
+
+        timeLabel = "$min:"
+        if(sec < 10){
+            timeLabel += "0"
+        }
+        timeLabel += sec
+
+        return timeLabel
     }
 }

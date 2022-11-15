@@ -1,6 +1,7 @@
 package com.example.thievesmusicplayer.communicators
 
 import android.content.Context
+import android.media.MediaPlayer
 import androidx.fragment.app.Fragment
 import com.example.thievesmusicplayer.adpterClasses.Song
 
@@ -17,6 +18,7 @@ interface MainCommunicator {
 
     fun playNextSong(skipped: Boolean)
     fun playPreviousSong()
+
 
     fun setCurrentSongData()
 
@@ -36,4 +38,9 @@ interface MainCommunicator {
     fun setCurrentFragment(currentFragmentTemp: String)
 
     fun setCurrentSongPlaying(currentSongPlayingTemp: Int)
+
+    fun setTotalSongDuration(totalSongDurationTemp: Int)
+    fun getTotalSongDuration(): Int
+
+    fun getMediaPlayer(): MediaPlayer
 }

@@ -84,6 +84,7 @@
                 android:textAlignment="center"
                 android:gravity="center"/>
             <SeekBar
+                android:id="@+id/position_sb"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="14"
@@ -106,7 +107,17 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="5"/>
+                android:layout_weight="1"/>
+            <ImageView
+                android:id="@+id/shuffle_iv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:src="@drawable/ic_shuffle"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"/>
             <ImageView
                 android:id="@+id/skip_previous_song_iv"
                 android:layout_width="0dp"
@@ -128,17 +139,8 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"/>
-            <ImageView
-                android:id="@+id/shuffle_iv"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:src="@drawable/ic_shuffle"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="5"/>
+
         </LinearLayout>
         <TextView
             android:layout_width="match_parent"

@@ -35,13 +35,14 @@ class SongAdapter(var songs: List<Song>, var mainCommunicator: MainCommunicator)
         if(mainCommunicator.getCurrentSongPlayingId() == holder.adapterPosition){
             holder.itemView.is_playing_iv.visibility = View.VISIBLE
             tempHolder = holder
+            clicked = true
         }
         else{
             holder.itemView.is_playing_iv.visibility = View.INVISIBLE
         }
 
         holder.itemView.setOnClickListener {
-            if(clicked && (songId == holder.adapterPosition)){
+            if(clicked && (mainCommunicator.getCurrentSongPlayingId() == holder.adapterPosition)){
                 mainCommunicator.setCurrentFragment("SONG")
                 mainCommunicator.replaceFragment(SongFragment())
                 clicked = false

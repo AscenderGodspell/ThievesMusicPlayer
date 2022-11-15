@@ -3,6 +3,7 @@ package com.example.thievesmusicplayer
 
 import android.Manifest
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.media.MediaPlayer
@@ -26,11 +27,14 @@ import android.graphics.BitmapFactory
 import android.graphics.Bitmap
 
 import android.media.MediaMetadataRetriever
+import android.os.Handler
+import android.os.Message
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.thievesmusicplayer.fragments.SongFragment
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.fragment_song.*
+import kotlinx.android.synthetic.main.fragment_song.view.*
 
 
 class MainActivity : AppCompatActivity(), MainCommunicator {
@@ -47,6 +51,7 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
     private var isOnPause = false
     private var currentSongPlaying = 0
     private lateinit var currentFragment: String
+    private var totalSongDuration = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +81,8 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
         //HANDLING FOR STORAGE PERMISSION
 
         fetchMusicFromFolder()
+        initializeMediaPlayer()
+        totalSongDuration = mediaPlayer.duration
     }
 
     override fun onDestroy() {
@@ -123,18 +130,25 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
         songList.removeFirst()
     }
 
+    fun initializeMediaPlayer()
+    {
+        val songPath: String = songList.elementAt(currentSongPlaying).fileName
+        var file = File(path + songPath)
+        mediaPlayer = MediaPlayer.create(this, Uri.parse(path + songPath))
+    }
+
     override fun playAudio(){
 
         if(songList.isEmpty()){
             Toast.makeText(this, "No Songs Found", Toast.LENGTH_LONG).show()
         }
         else {
-            val songPath: String = songList.elementAt(currentSongPlaying).fileName
-            Log.d("Main", " PATH : " + path + songPath)
-            var file = File(path + songPath)
-            Log.d("Main", " mp3 exists : " + file.exists() + ", can read : " + file.canRead())
-            mediaPlayer = MediaPlayer.create(this, Uri.parse(path + songPath))
+            initializeMediaPlayer()
 
+            totalSongDuration = mediaPlayer.duration
+            if(currentFragment == "SONG"){
+                position_sb.max = totalSongDuration
+            }
             isPlayingSong = true
             mediaPlayer.start()
 
@@ -256,5 +270,17 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
 
     override fun setCurrentFragment(currentFragmentTemp: String){
         currentFragment = currentFragmentTemp
+    }
+
+    override fun setTotalSongDuration(totalSongDurationTemp: Int) {
+        totalSongDuration = totalSongDurationTemp
+    }
+
+    override fun getTotalSongDuration(): Int{
+        return totalSongDuration
+    }
+
+    override fun getMediaPlayer(): MediaPlayer {
+        return mediaPlayer
     }
 }
