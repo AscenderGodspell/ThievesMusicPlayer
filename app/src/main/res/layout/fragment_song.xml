@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.SongFragment">
@@ -22,7 +24,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_double_arrow_down"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -32,18 +35,47 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_add"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:layout_marginEnd="12dp"/>
         </LinearLayout>
-        <ImageView
-            android:id="@+id/song_cover_iv"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="8"
-            android:src="@drawable/ascension"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="0.5"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8">
+            <ImageView
+                android:id="@+id/song_cover_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ascension"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="3"
+                android:gravity="bottom">
+                <com.gauravk.audiovisualizer.visualizer.BarVisualizer xmlns:custom="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/audio_visualizer_bv"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    custom:avColor="@color/white"
+                    custom:avDensity="0.6"
+                    custom:avSpeed="medium"
+                    custom:avWidth="4dp"
+                    android:layout_weight="2" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -56,19 +88,23 @@
                 android:layout_height="0dp"
                 android:layout_weight="3"
                 android:text="title"
-                android:textAlignment="center"/>
+                android:textSize="28sp"
+                android:textColor="@color/white"
+                android:textAlignment="center"
+                android:gravity="center" />
             <TextView
                 android:id="@+id/fragment_songs_artist_tv"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="artist"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:gravity="center"/>
         </LinearLayout>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"/>
+            android:layout_weight="1.9"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -82,12 +118,16 @@
                 android:layout_weight="3"
                 android:text="00:00"
                 android:textAlignment="center"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="-16dp"/>
             <SeekBar
                 android:id="@+id/position_sb"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="14"
+                android:thumbTint="@color/white"
+                android:progressTint="@color/white"
                 android:progress="0"/>
             <TextView
                 android:id="@+id/song_length_tv"
@@ -96,8 +136,14 @@
                 android:layout_weight="3"
                 android:text="01:00"
                 android:textAlignment="center"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:layout_marginEnd="12dp"
+                android:layout_marginStart="-16dp"/>
         </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -107,12 +153,12 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1.2"/>
             <ImageView
-                android:id="@+id/shuffle_iv"
+                android:id="@+id/order_iv"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
+                android:layout_weight="1.8"
                 android:src="@drawable/ic_shuffle"/>
             <TextView
                 android:layout_width="0dp"
@@ -129,7 +175,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="5"
-                android:src="@drawable/ic_play_circle"/>
+                android:src="@drawable/ic_play_circle" />
             <ImageView
                 android:id="@+id/skip_song_iv"
                 android:layout_width="0dp"

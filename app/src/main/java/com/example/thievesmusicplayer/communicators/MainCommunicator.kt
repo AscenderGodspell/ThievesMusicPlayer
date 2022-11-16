@@ -2,8 +2,10 @@ package com.example.thievesmusicplayer.communicators
 
 import android.content.Context
 import android.media.MediaPlayer
+import android.view.View
 import androidx.fragment.app.Fragment
 import com.example.thievesmusicplayer.adpterClasses.Song
+import com.gauravk.audiovisualizer.visualizer.BarVisualizer
 
 interface MainCommunicator {
     fun replaceFragment(fragment: Fragment)
@@ -18,6 +20,8 @@ interface MainCommunicator {
 
     fun playNextSong(skipped: Boolean)
     fun playPreviousSong()
+
+    fun initializeAudioVisualizer(view: View)
 
 
     fun setCurrentSongData()

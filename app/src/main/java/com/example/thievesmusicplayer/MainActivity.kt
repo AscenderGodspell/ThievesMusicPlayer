@@ -29,9 +29,11 @@ import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
 import android.os.Handler
 import android.os.Message
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.thievesmusicplayer.fragments.SongFragment
+import com.gauravk.audiovisualizer.visualizer.BarVisualizer
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.fragment_song.*
 import kotlinx.android.synthetic.main.fragment_song.view.*
@@ -42,6 +44,7 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
     private val mainFragment = MainFragment()
 
     private lateinit var mediaPlayer : MediaPlayer
+    private lateinit var visualizer: BarVisualizer
 
     private var songList = mutableListOf<Song>()
 
@@ -60,7 +63,7 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
         currentFragment = "MAIN"
         replaceFragment(mainFragment)
 
-        //HANDLING FOR STORAGE PERMISSION
+        //HANDLING PERMISSIONS
         if(ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED){
@@ -75,10 +78,28 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                     1)
 
-                Toast.makeText(this, "EXPLANATION NO NEEDED", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "EXPLANATION NOT NEEDED", Toast.LENGTH_LONG).show()
             }
         }
-        //HANDLING FOR STORAGE PERMISSION
+
+        if(ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO)
+            != PackageManager.PERMISSION_GRANTED){
+
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.RECORD_AUDIO)){
+
+                Toast.makeText(this, "EXPLANATION", Toast.LENGTH_LONG).show()
+            }
+            else{
+                ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.RECORD_AUDIO),
+                    1)
+
+                Toast.makeText(this, "EXPLANATION NOT NEEDED", Toast.LENGTH_LONG).show()
+            }
+        }
+        //HANDLING PERMISSIONS
 
         fetchMusicFromFolder()
         initializeMediaPlayer()
@@ -89,6 +110,9 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
         if(this::mediaPlayer.isInitialized){
             mediaPlayer.stop()
             mediaPlayer.release()
+            if( visualizer != null){
+                visualizer.release()
+            }
         }
         super.onDestroy()
     }
@@ -102,6 +126,9 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
             }
 
             transaction.commit()
+            if(currentFragment == "MAIN" && (this::visualizer.isInitialized)){
+                visualizer.release()
+            }
         }
     }
 
@@ -123,7 +150,11 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
 
     fun fetchMusicFromFolder(){
         File(path).walkTopDown().forEach { it ->
-            val tempSong = Song(it.name, it.name.substringAfter(" - ").substringBefore(".mp3"), it.name.substringBefore(" - "), it.path, 0f)
+
+            var tempSong = Song(it.name, it.name.substringAfter(" - ").substringBefore(".mp3"), it.name.substringBefore(" - "), it.path, 0f)
+            if(it.name.contains(".MP3")){
+                tempSong = Song(it.name, it.name.substringAfter(" - ").substringBefore(".MP3"), it.name.substringBefore(" - "), it.path, 0f)
+            }
 
             songList.add(tempSong)
         }
@@ -135,6 +166,30 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
         val songPath: String = songList.elementAt(currentSongPlaying).fileName
         var file = File(path + songPath)
         mediaPlayer = MediaPlayer.create(this, Uri.parse(path + songPath))
+
+        initializeAudioVisualizerOnPlay()
+    }
+
+    override fun initializeAudioVisualizer(view: View){
+        if(currentFragment == "SONG"){
+            visualizer = view.audio_visualizer_bv
+
+            val audioSessionId = mediaPlayer.audioSessionId
+            if(audioSessionId != -1){
+                visualizer.setAudioSessionId(audioSessionId)
+            }
+        }
+    }
+
+    fun initializeAudioVisualizerOnPlay(){
+        if(currentFragment == "SONG"){
+            visualizer = findViewById(R.id.audio_visualizer_bv)
+
+            val audioSessionId = mediaPlayer.audioSessionId
+            if(audioSessionId != -1){
+                visualizer.setAudioSessionId(audioSessionId)
+            }
+        }
     }
 
     override fun playAudio(){

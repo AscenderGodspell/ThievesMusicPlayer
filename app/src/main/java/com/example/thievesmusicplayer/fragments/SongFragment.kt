@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import com.example.thievesmusicplayer.R
 import com.example.thievesmusicplayer.communicators.MainCommunicator
+import com.gauravk.audiovisualizer.visualizer.BarVisualizer
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.android.synthetic.main.fragment_song.*
 import kotlinx.android.synthetic.main.fragment_song.view.*
@@ -37,6 +38,8 @@ class SongFragment : Fragment() {
 
 
         //Prepare View
+        mainCommunicator.initializeAudioVisualizer(view)
+
         view.fragment_song_title_tv.text = currentSongSF.title
         view.fragment_songs_artist_tv.text = currentSongSF.artist
 
