@@ -4,6 +4,7 @@ package com.example.thievesmusicplayer
 import android.Manifest
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.media.MediaPlayer
@@ -299,6 +300,9 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
         //coverIV.setImageResource(R.drawable.ascension)
     }
 
+
+
+    //Getter and Setter
     override fun setIsPlayingSong(isPlayingSongTemp: Boolean){
         isPlayingSong = isPlayingSongTemp
     }
@@ -337,5 +341,35 @@ class MainActivity : AppCompatActivity(), MainCommunicator {
 
     override fun getMediaPlayer(): MediaPlayer {
         return mediaPlayer
+    }
+
+
+
+    //Shared Preferences
+    /*override fun saveCurrentSong(achievementStatus: String){
+        val pref = this.getSharedPreferences("currentSong", Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.apply{
+            putString("CURRENTSONG", achievementStatus)
+        }.apply()
+    }
+
+    override fun loadCurrentSong(): String{
+        val pref = this.getSharedPreferences("currentSong", Context.MODE_PRIVATE)
+        return pref.getString("CURRENTSONG", "000")!!
+    }*/
+
+    //0 = loop all songs, 1 = loop current song, 2 = shuffle
+    override fun savePlayOrder(playOrder: Int){
+        val pref = this.getSharedPreferences("playOrder", Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.apply{
+            putInt("PLAYORDER", playOrder)
+        }.apply()
+    }
+
+    override fun loadPlayOrder(): Int{
+        val pref = this.getSharedPreferences("playOrder", Context.MODE_PRIVATE)
+        return pref.getInt("PLAYORDER", 0)
     }
 }

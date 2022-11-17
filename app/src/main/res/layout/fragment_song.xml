@@ -66,7 +66,8 @@
                     custom:avDensity="0.6"
                     custom:avSpeed="medium"
                     custom:avWidth="4dp"
-                    android:layout_weight="2" />
+                    android:layout_weight="2"
+                    android:alpha="0.7"/>
             </LinearLayout>
 
         </RelativeLayout>
@@ -159,7 +160,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.8"
-                android:src="@drawable/ic_shuffle"/>
+                android:src="@drawable/ic_repeat"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

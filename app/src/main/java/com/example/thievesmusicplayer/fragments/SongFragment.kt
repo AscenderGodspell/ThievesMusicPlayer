@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import com.example.thievesmusicplayer.R
 import com.example.thievesmusicplayer.communicators.MainCommunicator
-import com.gauravk.audiovisualizer.visualizer.BarVisualizer
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.android.synthetic.main.fragment_song.*
 import kotlinx.android.synthetic.main.fragment_song.view.*
@@ -42,6 +40,18 @@ class SongFragment : Fragment() {
 
         view.fragment_song_title_tv.text = currentSongSF.title
         view.fragment_songs_artist_tv.text = currentSongSF.artist
+
+        when(mainCommunicator.loadPlayOrder()){
+            0 -> {
+                view?.order_iv?.setImageResource(R.drawable.ic_repeat)
+            }
+            1 -> {
+                view?.order_iv?.setImageResource(R.drawable.ic_repeat_one)
+            }
+            2 -> {
+                view?.order_iv?.setImageResource(R.drawable.ic_shuffle)
+            }
+        }
 
         if(mainCommunicator.getIsPlayingSong()){
             view.play_song_iv.setImageResource(R.drawable.ic_pause_circle)
@@ -101,6 +111,17 @@ class SongFragment : Fragment() {
             view.fragment_song_title_tv.text = currentSongSF.title
             view.fragment_songs_artist_tv.text = currentSongSF.artist
             view.play_song_iv.setImageResource(R.drawable.ic_pause_circle)
+        }
+
+        view.order_iv.setOnClickListener{
+            if(mainCommunicator.loadPlayOrder() == 2){
+                mainCommunicator.savePlayOrder(0)
+            }
+            else{
+                mainCommunicator.savePlayOrder(mainCommunicator.loadPlayOrder() + 1)
+            }
+
+            setPlayOrder()
         }
 
         view.position_sb.max = mainCommunicator.getTotalSongDuration()
@@ -174,5 +195,19 @@ class SongFragment : Fragment() {
         timeLabel += sec
 
         return timeLabel
+    }
+
+    fun setPlayOrder(){
+        when(mainCommunicator.loadPlayOrder()){
+            0 -> {
+                view?.order_iv?.setImageResource(R.drawable.ic_repeat)
+            }
+            1 -> {
+                view?.order_iv?.setImageResource(R.drawable.ic_repeat_one)
+            }
+            2 -> {
+                view?.order_iv?.setImageResource(R.drawable.ic_shuffle)
+            }
+        }
     }
 }

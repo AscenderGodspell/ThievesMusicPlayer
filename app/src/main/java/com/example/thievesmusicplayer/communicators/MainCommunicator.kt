@@ -24,6 +24,7 @@ interface MainCommunicator {
     fun initializeAudioVisualizer(view: View)
 
 
+
     fun setCurrentSongData()
 
     fun setPlayButton()
@@ -47,4 +48,9 @@ interface MainCommunicator {
     fun getTotalSongDuration(): Int
 
     fun getMediaPlayer(): MediaPlayer
+
+
+
+    fun savePlayOrder(playOrder: Int)
+    fun loadPlayOrder(): Int
 }
